@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1 maximum-scale=1, user-scalable="no">
+    <title>Webpage Carousel</title>
+    <link rel="stylesheet" href="/carousel.css">
+
+
+</head> 
+
+<body>
+    <div class="container" id="app" :style="'background-color:'+active_color+';'">
+        <div class="banner" :style="'background-image:url('+active_image+');'"></div>
+        <div class="title-box">
+            <div :class="['title',index==active_index?'active':'']" v-for="(item,index) in list" @mouseover="changeBanner(index)">
+                {{item.title}}
+                <span>{{item.sub_title}}</span>
+            </div>
+        </div>
+    </div>
+    <script src="/carousel.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                timer:null, 
+                active_index:0, //current carousel page
+                active_image:'/images/1.jpg', //current carrousel bacground image
+                active_color:'#53839a', //current color
+                size:9, //carousel image number
+                // banner data（json format）
+                list:[{
+                    title:'HOT NBA',
+                    sub_title:'Clippers vs Timberwolves',
+                    image:'/images/1.jpg',
+                    bg_color:'#53839a'
+                },
+                {
+                    title:'Honors',
+                    sub_title:'YangYang Soldier Soul',
+                    image:'/images/2.jpg',
+                    bg_color:'#bbbbaf'
+                },
+                {
+                    title:'ACE vs ACE',
+                    sub_title:'ShenTeng JiaLing cos Pleasant Goat',
+                    image:'/images/3.jpg',
+                    bg_color:'#120f16'
+                },
+                {
+                    title:'The Great Arms Robbery',
+                    sub_title:'National Couple Smith',
+                    image:'/images/4.jpg',
+                    bg_color:'#600004'
+                },
+                {
+                    title:'MaoXueWang',
+                    sub_title:'LiXueQin',
+                    image:'/images/5.jpg',
+                    bg_color:'#eeec88'
+                },
+                {
+                    title:'Sniper War',
+                    sub_title:'Sniper Legend in Urkerrein',
+                    image:'/images/6.jpg',
+                    bg_color:'#89a1a3'
+                },
+                {
+                    title:'Fatal Murder',
+                    sub_title:'Reveal Motives',
+                    image:'/images/7.jpg',
+                    bg_color:'#1d221c'
+                },
+                {
+                    title:'Declare Right Now',
+                    sub_title:'To Customers',
+                    image:'/images/8.jpg',
+                    bg_color:'#bd60d5'
+                },
+                {
+                    title:'Massive Benefits',
+                    sub_title:'Noah',
+                    image:'/images/9.jpg',
+                    bg_color:'#0d283d'
+                }]
+            },
+            methods:{
+                // banner stop
+                stopAutoPlay(){
+                    if(this.timer){
+                        clearInterval(this.timer);
+                    }
+                },
+                // banner start
+                startAutoPlay(){
+                    let _t=this;
+                    this.timer=setInterval(() => {
+                        _t.active_index++;
+                        if(_t.active_index>_t.size-1){
+                            _t.active_index=0;
+                        }
+                        _t.changeBanner(_t.active_index);
+                    }, 3000);
+                },
+                // change carousel bannaer
+                changeBanner(index){
+                    this.stopAutoPlay();
+                    this.active_index=index;
+                    this.active_image=this.list[index].image;
+                    this.active_color=this.list[index].bg_color;
+                    this.startAutoPlay();
+                }
+            },
+            mounted(){
+                // initialization
+                this.startAutoPlay();
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+<!-- <script src="/carousel.js"></script> -->
